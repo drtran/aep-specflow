@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C9E7EDB4-62C7-4F7A-965E-19CA8B6D38DB}</ProjectGuid>
+    <ProjectGuid>{3A16505B-CA1F-4383-8B2A-87269180E49F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Module1</RootNamespace>
-    <AssemblyName>Module1</AssemblyName>
+    <RootNamespace>Module2</RootNamespace>
+    <AssemblyName>Module2</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -58,25 +58,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdoptingMultiplePuppiesSteps.cs" />
-    <Compile Include="AdoptMultiplePuppies.feature.cs">
+    <Compile Include="AdoptingMultiplePuppies_2Steps.cs" />
+    <Compile Include="AdoptMultiplePuppies_2.feature.cs">
+      <DependentUpon>AdoptMultiplePuppies_2.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AdoptMultiplePuppies.feature</DependentUpon>
     </Compile>
-    <Compile Include="PaymentInfo.cs" />
+    <Compile Include="Class1.cs" />
+    <Compile Include="PaymentInfo_2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AdoptMultiplePuppies.feature">
+    <None Include="AdoptMultiplePuppies_2.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>AdoptMultiplePuppies.feature.cs</LastGenOutput>
+      <LastGenOutput>AdoptMultiplePuppies_2.feature.cs</LastGenOutput>
     </None>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
