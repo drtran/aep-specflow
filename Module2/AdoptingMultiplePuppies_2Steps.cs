@@ -66,16 +66,8 @@ namespace Module1
         [When(@"I pay for the adoption using this type of payment:")]
         public void WhenIPayForTheAdoptionUsingThisTypeOfPayment(Table table)
         {
-            TableRow row = table.Rows[0];
-   
-            var paymentInfo = new PaymentInfo_2
-            {
-                
-                paymentType = row["paymentType"],
-                orderName = row["orderName"],
-                orderAddress = row["orderAddress"],
-                orderEmail = row["orderEmail"]
-            };
+            List<PaymentInfo_2> paymentInfos = new PaymentInfo_2().Transform(table);
+            var paymentInfo = paymentInfos[0];
 
             IWebDriver driver = ScenarioContext.Current["driver"] as IWebDriver;
             IWebElement orderNameField = driver.FindElement(By.Id("order_name"));
