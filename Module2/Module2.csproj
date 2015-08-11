@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdoptingMultiplePuppies_2Steps.cs" />
+    <Compile Include="AdoptingSteps.cs" />
     <Compile Include="AdoptMultiplePuppies_2.feature.cs">
       <DependentUpon>AdoptMultiplePuppies_2.feature</DependentUpon>
       <AutoGen>True</AutoGen>

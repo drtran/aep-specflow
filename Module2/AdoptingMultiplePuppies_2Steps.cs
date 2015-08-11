@@ -3,62 +3,32 @@ using TechTalk.SpecFlow;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium;
 using NUnit.Framework;
-using System.Collections.ObjectModel;
 using System.Collections.Generic;
-using OpenQA.Selenium.Support.UI;
 
-namespace Module1
+namespace Module2
 {
     [Binding]
     public class AdoptingMultiplePuppiesSteps
     {
-        private string homePage;
+        private AdoptingSteps adoptingSteps;
+        private IWebDriver driver;
 
         [Given(@"that I am at the website ""(.*)""")]
-        public void GivenThatIAmAtTheWebsite(string url)
+        public void GivenThatIAmAtTheWebsite(String url)
         {
-            IWebDriver driver = new FirefoxDriver();
-            driver.Navigate().GoToUrl(url);
-            driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(10));
-            homePage = driver.Url;
-            ScenarioContext.Current.Add("driver", driver);
-            Assert.AreEqual("Sally's Puppy Adoption Agency", driver.Title);
+            driver = new FirefoxDriver();
+            adoptingSteps = new AdoptingSteps(driver);
+            adoptingSteps.visit_the_adoption_puppies_page(url);
         }
 
         [When(@"I adopt for these pets,")]
         public void WhenIAdoptForThesePets(TechTalk.SpecFlow.Table petNames)
         {
-            IWebDriver driver = ScenarioContext.Current["driver"] as IWebDriver;
-
             for (int i = 0; i < petNames.RowCount; i++)
             {
-                ReadOnlyCollection<IWebElement> nameLabels = driver.FindElements(By.ClassName("name"));
-                ReadOnlyCollection<IWebElement> viewDetailsButtons = driver.FindElements(By.XPath("//input[@value='View Details']"));
-
                 var petName = petNames.Rows[i][0];
-                Console.WriteLine("taking care of " + petName);
-                for (int j = 0; j < nameLabels.Count; j++)
-                {
-                    if (nameLabels[j].Text == petName)
-                    {
-                        Console.WriteLine("FOUND: " + petName);
-                        viewDetailsButtons[j].Click();
-                        IWebElement adoptMeButton = driver.FindElement(By.XPath("//input[@value='Adopt Me!']"));
-                        adoptMeButton.Click();
-                        if (petNames.RowCount == i + 1)
-                        {
-                            IWebElement completeTheAdoptionButton = driver.FindElement(By.XPath("//input[@value='Complete the Adoption']"));
-                            completeTheAdoptionButton.Click();
-                        }
-                        else
-                        {
-                            IWebElement adoptAnotherButton = driver.FindElement(By.XPath("//input[@value='Adopt Another Puppy']"));
-                            adoptAnotherButton.Click();
-                        }
-                        break;
-                    }
-                }
-
+                Console.WriteLine("Adopting " + petName);
+                adoptingSteps.adopt_a_pet(petName, petNames.RowCount == i + 1);
             }
 
         }
@@ -69,33 +39,13 @@ namespace Module1
             List<PaymentInfo_2> paymentInfos = new PaymentInfo_2().Transform(table);
             var paymentInfo = paymentInfos[0];
 
-            IWebDriver driver = ScenarioContext.Current["driver"] as IWebDriver;
-            IWebElement orderNameField = driver.FindElement(By.Id("order_name"));
-            IWebElement orderAddressField = driver.FindElement(By.Id("order_address"));
-            IWebElement orderEmailField = driver.FindElement(By.Id("order_email"));
-            IWebElement orderPayTypeElement = driver.FindElement(By.Id("order_pay_type"));
-            IWebElement placeOrderButton = driver.FindElement(By.XPath("//input[@value='Place Order']"));
-            orderNameField.SendKeys(paymentInfo.orderName);
-            orderAddressField.SendKeys(paymentInfo.orderAddress);
-            orderEmailField.SendKeys(paymentInfo.orderEmail);
-            SelectElement select = new SelectElement(orderPayTypeElement);
-            foreach (IWebElement option in select.Options)
-            {
-                if (option.Text == paymentInfo.paymentType)
-                {
-                    option.Click();
-                    break;
-                }
-            }
-            placeOrderButton.Click();
+            adoptingSteps.pay_for_the_adoption(paymentInfo);
         }
 
         [Then(@"I should be back at the main page with a thank you note, ""(.*)""")]
         public void ThenIShouldBeBackAtTheMainPageWithAThankYouNote(string thankyouMsg)
         {
-            IWebDriver driver = ScenarioContext.Current["driver"] as IWebDriver;
-            IWebElement noticeLabel = driver.FindElement(By.Id("notice"));
-            Assert.AreEqual(thankyouMsg, noticeLabel.Text);
+            adoptingSteps.verify_successful_adoption(thankyouMsg);
             driver.Dispose();
         }
 

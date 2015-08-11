@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using TechTalk.SpecFlow;
 
-namespace Module1
+namespace Module2
 {
     public class PaymentInfo_2
     {
